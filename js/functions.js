@@ -1,3 +1,4 @@
+
 // eslint-disable-next-line no-unused-vars
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 

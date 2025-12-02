@@ -38,8 +38,7 @@ const renderThumbnails = (photosData) => {
   picturesContainer.appendChild(fragment);
 };
 
-// Вызываем функцию отрисовки с импортированными данными
+const photos = generatePhotoDescriptions();
 renderThumbnails(photos);
 
-// Экспорт функции для возможности использования в других модулях, если потребуется
 export { renderThumbnails };

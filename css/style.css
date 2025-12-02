@@ -1429,3 +1429,18 @@ main {
 .hidden {
   display: none;
 }
+* Стили для сообщений об ошибках валидации Pristine */
+.img-upload__error {
+  display: block;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffff;
+  background-color: #fd4d4b;
+  border-radius: 2px;
+  margin-top: 5px;
+}
+
+.img-upload__field-wrapper.has-danger .img-upload__error {
+  display: block;
+}

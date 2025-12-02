@@ -43,6 +43,6 @@ const createPhoto = (index) => ({
   comments: createComments(),
 });
 
-const photos = Array.from({ length: PHOTO_COUNT }, (_, index) => createPhoto(index + 1));
+const generatePhotoDescriptions = () => Array.from({ length: PHOTO_COUNT }, (_, index) => createPhoto(index + 1));
 
-export { photos };
+export { generatePhotoDescriptions };

@@ -1,4 +1,4 @@
-import { photos } from './data.js';
+import { generatePhotoDescriptions } from './data.js';
 import { openBigPicture } from './full-ph.js';
 
 const picturesContainer = document.querySelector('.pictures');
@@ -17,9 +17,8 @@ const createThumbnail = (photo) => {
   imageElement.alt = photo.description;
 
   thumbnail.querySelector('.picture__likes').textContent = photo.likes;
-  thumbnail.querySelector('.picture__comments').textContent = photo.comments.length; // Используем длину массива комментариев
+  thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
 
-  // Добавляем обработчик клика для открытия полноразмерного окна
   thumbnail.addEventListener('click', (evt) => {
     evt.preventDefault();
     openBigPicture(photo);
@@ -43,8 +42,7 @@ const renderThumbnails = (photosData) => {
   picturesContainer.appendChild(fragment);
 };
 
-// Вызываем функцию отрисовки с импортированными данными
+const photos = generatePhotoDescriptions();
 renderThumbnails(photos);
 
-// Экспорт функции для возможности использования в других модулях, если потребуется
 export { renderThumbnails };

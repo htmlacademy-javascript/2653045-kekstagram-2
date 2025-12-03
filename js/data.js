@@ -8,5 +8,8 @@ const createPhoto = (index) => ({
   comments: Math.floor(Math.random() * 20) + 1,
 });
 
-// Экспортируем массив напрямую, без промежуточной переменной 'photos'
-export default Array.from({ length: PHOTO_COUNT }, (_, index) => createPhoto(index + 1));
+// Создаём функцию для генерации фотографий
+const generatePhotoDescriptions = () => Array.from({ length: PHOTO_COUNT }, (_, index) => createPhoto(index + 1));
+
+// Экспортируем функцию
+export { generatePhotoDescriptions };

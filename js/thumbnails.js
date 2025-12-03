@@ -1,5 +1,5 @@
-// Импортируем массив фотографий, который экспортируется по умолчанию из data.js
-import photos from './data.js';
+// Импортируем функцию генерации фотографий
+import { generatePhotoDescriptions } from './data.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -38,6 +38,7 @@ const renderThumbnails = (photosData) => {
   picturesContainer.appendChild(fragment);
 };
 
+// Генерируем фотографии и отрисовываем миниатюры
 const photos = generatePhotoDescriptions();
 renderThumbnails(photos);
 

@@ -1,3 +1,4 @@
+
 // Импортируем функцию генерации фотографий
 import { generatePhotoDescriptions } from './data.js';
 

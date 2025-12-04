@@ -1,4 +1,3 @@
-
 // Импортируем функции
 import { generatePhotoDescriptions } from './data.js';
 import { openBigPicture } from './full-ph.js';
@@ -20,7 +19,7 @@ const createThumbnail = (photo) => {
 
   // Заполнение данных
   thumbnail.querySelector('.picture__likes').textContent = photo.likes;
-  thumbnail.querySelector('.picture__comments').textContent = photo.comments;
+  thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
 
   // Обработчик клика для открытия полноэкранного просмотра
   thumbnail.addEventListener('click', (evt) => {

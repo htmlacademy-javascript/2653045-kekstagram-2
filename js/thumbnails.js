@@ -1,5 +1,6 @@
-// Импортируем массив фотографий, который экспортируется по умолчанию из data.js
-import photos from './data.js';
+// Импортируем функции
+import { generatePhotoDescriptions } from './data.js';
+import { openBigPicture } from './full-ph.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -18,7 +19,13 @@ const createThumbnail = (photo) => {
 
   // Заполнение данных
   thumbnail.querySelector('.picture__likes').textContent = photo.likes;
-  thumbnail.querySelector('.picture__comments').textContent = photo.comments;
+  thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
+
+  // Обработчик клика для открытия полноэкранного просмотра
+  thumbnail.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    openBigPicture(photo);
+  });
 
   return thumbnail;
 };
@@ -38,6 +45,7 @@ const renderThumbnails = (photosData) => {
   picturesContainer.appendChild(fragment);
 };
 
+// Генерируем фотографии и отрисовываем миниатюры
 const photos = generatePhotoDescriptions();
 renderThumbnails(photos);
 

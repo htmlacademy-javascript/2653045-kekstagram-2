@@ -20,6 +20,7 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const bodyElement = document.querySelector('body');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
+const imagePreview = document.querySelector('.img-upload__preview img');
 
 /**
  * Нормализует строку хэштегов
@@ -114,8 +115,6 @@ function onDocumentKeydown(evt) {
  * Открывает форму загрузки изображения
  */
 const openUploadForm = () => {
-  console.log('Открытие формы...');
-
   uploadOverlay.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -123,23 +122,46 @@ const openUploadForm = () => {
   // Инициализация масштаба и эффектов
   initScale();
   initEffects();
-
-  console.log('Форма открыта');
 };
 
 /**
  * Обработчик изменения поля выбора файла
  */
 const onFileInputChange = () => {
-  console.log('Файл выбран, открываем форму...');
-  openUploadForm();
+  const file = uploadFileInput.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  // Проверка типа файла
+  if (!file.type.startsWith('image/')) {
+    // eslint-disable-next-line no-alert
+    alert('Пожалуйста, выберите изображение');
+    uploadFileInput.value = '';
+    return;
+  }
+
+  // Чтение файла и установка превью
+  const reader = new FileReader();
+
+  reader.addEventListener('load', () => {
+    imagePreview.src = reader.result;
+    openUploadForm();
+  });
+
+  reader.addEventListener('error', () => {
+    // eslint-disable-next-line no-alert
+    alert('Не удалось загрузить изображение');
+  });
+
+  reader.readAsDataURL(file);
 };
 
 /**
  * Обработчик клика по кнопке закрытия формы
  */
 const onCancelButtonClick = () => {
-  console.log('Закрытие формы...');
   closeUploadForm();
 };
 
@@ -149,33 +171,34 @@ const onCancelButtonClick = () => {
  */
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  console.log('Форма отправлена (валидация временно отключена)');
 
   // Простая валидация без Pristine
-  const hashtags = parseHashtags(hashtagsInput.value);
   const comment = descriptionInput.value;
 
   if (!validateHashtagsCount(hashtagsInput.value)) {
+    // eslint-disable-next-line no-alert
     alert(`Максимум ${MAX_HASHTAGS} хэштегов`);
     return;
   }
 
   if (!validateHashtagsFormat(hashtagsInput.value)) {
+    // eslint-disable-next-line no-alert
     alert(`Хэштег должен начинаться с # и содержать от ${MIN_HASHTAG_LENGTH} до ${MAX_HASHTAG_LENGTH} символов`);
     return;
   }
 
   if (!validateHashtagsUniqueness(hashtagsInput.value)) {
+    // eslint-disable-next-line no-alert
     alert('Хэштеги не должны повторяться');
     return;
   }
 
   if (!validateCommentLength(comment)) {
+    // eslint-disable-next-line no-alert
     alert(`Максимум ${MAX_COMMENT_LENGTH} символов в комментарии`);
-    return;
+
   }
 
-  console.log('Валидация пройдена!');
   // uploadForm.submit(); // Раскомментируйте для реальной отправки
 };
 
@@ -183,13 +206,9 @@ const onFormSubmit = (evt) => {
  * Инициализация модуля формы
  */
 const initForm = () => {
-  console.log('Инициализация формы...');
-
   uploadFileInput.addEventListener('change', onFileInputChange);
   uploadCancel.addEventListener('click', onCancelButtonClick);
   uploadForm.addEventListener('submit', onFormSubmit);
-
-  console.log('Форма инициализирована');
 };
 
 export { initForm };

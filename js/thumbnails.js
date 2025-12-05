@@ -1,14 +1,15 @@
-// Импортируем функции
-import { generatePhotoDescriptions } from './data.js';
-import { openBigPicture } from './full-ph.js';
+
+/**
+ * Модуль для отрисовки миниатюр фотографий
+ */import { openBigPicture } from './full-ph.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 /**
- * Создает DOM-элемент миниатюры на основе данных фотографии.
- * @param {object} photo - Объект с данными фотографии.
- * @returns {Node} - DOM-элемент миниатюры.
+ * Создает DOM-элемент миниатюры на основе данных фотографии
+ * @param {object} photo - Объект с данными фотографии
+ * @returns {Node} - DOM-элемент миниатюры
  */
 const createThumbnail = (photo) => {
   const thumbnail = pictureTemplate.cloneNode(true);
@@ -17,24 +18,28 @@ const createThumbnail = (photo) => {
   imageElement.src = photo.url;
   imageElement.alt = photo.description;
 
-  // Заполнение данных
   thumbnail.querySelector('.picture__likes').textContent = photo.likes;
   thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
 
-  // Обработчик клика для открытия полноэкранного просмотра
+  // Добавляем обработчик клика для открытия полноразмерного фото
   thumbnail.addEventListener('click', (evt) => {
     evt.preventDefault();
     openBigPicture(photo);
+
   });
 
   return thumbnail;
 };
 
 /**
- * Отрисовывает миниатюры фотографий в контейнере.
- * @param {Array<object>} photosData - Массив объектов с данными фотографий.
+ * Отрисовывает миниатюры фотографий в контейнере
+ * @param {Array<object>} photosData - Массив объектов с данными фотографий
  */
 const renderThumbnails = (photosData) => {
+  // Очищаем контейнер от предыдущих миниатюр
+  const oldThumbnails = picturesContainer.querySelectorAll('.picture');
+  oldThumbnails.forEach((thumbnail) => thumbnail.remove());
+
   const fragment = document.createDocumentFragment();
 
   photosData.forEach((photo) => {
@@ -44,9 +49,5 @@ const renderThumbnails = (photosData) => {
 
   picturesContainer.appendChild(fragment);
 };
-
-// Генерируем фотографии и отрисовываем миниатюры
-const photos = generatePhotoDescriptions();
-renderThumbnails(photos);
 
 export { renderThumbnails };

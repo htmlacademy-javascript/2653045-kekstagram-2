@@ -4,11 +4,12 @@
 
 import { initScale, resetScale } from './scale.js';
 import { initEffects, resetEffects } from './effects.js';
+import { sendData } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './messages.js';
 
 // Константы для валидации
 const MAX_HASHTAGS = 5;
 const MAX_HASHTAG_LENGTH = 20;
-const MIN_HASHTAG_LENGTH = 2;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_REGEX = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -17,10 +18,18 @@ const uploadForm = document.querySelector('#upload-select-image');
 const uploadFileInput = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancel = document.querySelector('#upload-cancel');
+const uploadSubmit = document.querySelector('#upload-submit');
 const bodyElement = document.querySelector('body');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 const imagePreview = document.querySelector('.img-upload__preview img');
+
+// Инициализация Pristine
+const pristine = new Pristine(uploadForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error',
+});
 
 /**
  * Нормализует строку хэштегов
@@ -72,13 +81,47 @@ const validateHashtagsUniqueness = (value) => {
   return hashtags.length === uniqueHashtags.size;
 };
 
-/**
- * Валидация длины комментария
- * @param {string} value - Текст комментария
- * @returns {boolean}
- */
-const validateCommentLength = (value) => value.length <= MAX_COMMENT_LENGTH;
+// Добавление правил валидации для хэштегов
+pristine.addValidator(
+  hashtagsInput,
+  validateHashtagsCount,
+  `Максимум ${MAX_HASHTAGS} хэштегов`
+);
 
+pristine.addValidator(
+  hashtagsInput,
+  validateHashtagsFormat,
+  `Хэштег должен начинаться с # и содержать от 2 до ${MAX_HASHTAG_LENGTH} символов (буквы и цифры)`
+);
+
+pristine.addValidator(
+  hashtagsInput,
+  validateHashtagsUniqueness,
+  'Хэштеги не должны повторяться (регистр не учитывается)'
+);
+
+// Добавление правил валидации для комментария
+pristine.addValidator(
+  descriptionInput,
+  (value) => value.length <= MAX_COMMENT_LENGTH,
+  `Максимум ${MAX_COMMENT_LENGTH} символов`
+);
+
+/**
+ * Блокирует кнопку отправки
+ */
+const blockSubmitButton = () => {
+  uploadSubmit.disabled = true;
+  uploadSubmit.textContent = 'Отправляю...';
+};
+
+/**
+ * Разблокирует кнопку отправки
+ */
+const unblockSubmitButton = () => {
+  uploadSubmit.disabled = false;
+  uploadSubmit.textContent = 'Опубликовать';
+};
 /**
  * Закрывает форму загрузки изображения
  */
@@ -88,6 +131,7 @@ const closeUploadForm = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadForm.reset();
+  pristine.reset();
 
   resetScale();
   resetEffects();
@@ -172,34 +216,34 @@ const onCancelButtonClick = () => {
 const onFormSubmit = (evt) => {
   evt.preventDefault();
 
-  // Простая валидация без Pristine
-  const comment = descriptionInput.value;
+  // Валидация через Pristine
+  const isValid = pristine.validate();
 
-  if (!validateHashtagsCount(hashtagsInput.value)) {
-    // eslint-disable-next-line no-alert
-    alert(`Максимум ${MAX_HASHTAGS} хэштегов`);
+  if (!isValid) {
     return;
   }
 
-  if (!validateHashtagsFormat(hashtagsInput.value)) {
-    // eslint-disable-next-line no-alert
-    alert(`Хэштег должен начинаться с # и содержать от ${MIN_HASHTAG_LENGTH} до ${MAX_HASHTAG_LENGTH} символов`);
-    return;
-  }
+  // Блокируем кнопку отправки
+  blockSubmitButton();
 
-  if (!validateHashtagsUniqueness(hashtagsInput.value)) {
-    // eslint-disable-next-line no-alert
-    alert('Хэштеги не должны повторяться');
-    return;
-  }
+  // Создаем FormData из формы
+  const formData = new FormData(uploadForm);
 
-  if (!validateCommentLength(comment)) {
-    // eslint-disable-next-line no-alert
-    alert(`Максимум ${MAX_COMMENT_LENGTH} символов в комментарии`);
-
-  }
-
-  // uploadForm.submit(); // Раскомментируйте для реальной отправки
+  // Отправляем данные на сервер
+  sendData(formData)
+    .then(() => {
+      // Успешная отправка
+      closeUploadForm();
+      showSuccessMessage();
+    })
+    .catch(() => {
+      // Ошибка отправки
+      showErrorMessage();
+    })
+    .finally(() => {
+      // Разблокируем кнопку в любом случае
+      unblockSubmitButton();
+    });
 };
 
 /**

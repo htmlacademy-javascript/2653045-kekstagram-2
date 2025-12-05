@@ -1,10 +1,32 @@
-import { generatePhotoDescriptions } from './data.js';
+/**
+ * Главный модуль приложения
+ */
+
+import { loadData } from './api.js';
+import { renderThumbnails } from './thumbnails.js';
+import { showDataErrorMessage } from './messages.js';
 import { initForm } from './form.js';
-import './thumbnails.js'; // Импорт модуля для отрисовки миниатюр и обработчиков кликов
+import './filters.js';
 
-const photoDescriptions = generatePhotoDescriptions();
-// eslint-disable-next-line no-console
-console.log(photoDescriptions);
+/**
+ * Инициализация приложения
+ */
+const initApp = () => {
+  // Инициализируем форму загрузки
+  initForm();
 
-// Инициализация формы загрузки
-initForm();
+  // Загружаем данные с сервера
+  loadData()
+    .then((photos) => {
+      // Отрисовываем миниатюры
+      renderThumbnails(photos);
+    })
+    .catch(() => {
+      // Показываем сообщение об ошибке
+      showDataErrorMessage();
+    });
+};
+
+// Запускаем приложение
+initApp();
+

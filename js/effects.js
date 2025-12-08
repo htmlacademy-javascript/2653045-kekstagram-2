@@ -157,6 +157,18 @@ const resetEffects = () => {
   }
 };
 
+/**
+ * Обновляет превью эффектов с загруженной фотографией
+ * @param {string} imageUrl - URL загруженной фотографии (base64 или обычный URL)
+ */
+const updateEffectPreviews = (imageUrl) => {
+  const effectPreviews = document.querySelectorAll('.effects__preview');
+
+  effectPreviews.forEach((preview) => {
+    preview.style.backgroundImage = `url(${imageUrl})`;
+  });
+};
+
 const initEffects = () => {
   imagePreview = document.querySelector('.img-upload__preview img');
   effectLevelSlider = document.querySelector('.effect-level__slider');
@@ -182,4 +194,4 @@ const initEffects = () => {
   toggleSliderVisibility(false);
 };
 
-export { initEffects, resetEffects };
+export { initEffects, resetEffects, updateEffectPreviews };

@@ -7,9 +7,26 @@ const resetCommentIdCounter = () => {
   commentIdCounter = 1;
 };
 
+/**
+ * Функция устранения дребезга (debounce)
+ * Откладывает выполнение функции до тех пор, пока не пройдет указанное время после последнего вызова
+ * @param {Function} callback - Функция, которую нужно вызвать с задержкой
+ * @param {number} timeoutDelay - Задержка в миллисекундах
+ * @returns {Function} - Функция с debounce
+ */
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 export {
   getRandomInteger,
   getRandomArrayElement,
   getUniqueCommentId,
-  resetCommentIdCounter
+  resetCommentIdCounter,
+  debounce
 };

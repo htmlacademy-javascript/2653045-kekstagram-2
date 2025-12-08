@@ -3,7 +3,7 @@
  */
 
 import { initScale, resetScale } from './scale.js';
-import { initEffects, resetEffects } from './effects.js';
+import { initEffects, resetEffects, updateEffectPreviews } from './effects.js';
 import { sendData } from './api.js';
 import { showSuccessMessage, showErrorMessage } from './messages.js';
 
@@ -122,6 +122,7 @@ const unblockSubmitButton = () => {
   uploadSubmit.disabled = false;
   uploadSubmit.textContent = 'Опубликовать';
 };
+
 /**
  * Закрывает форму загрузки изображения
  */
@@ -137,6 +138,9 @@ const closeUploadForm = () => {
   resetEffects();
 
   uploadFileInput.value = '';
+
+  // Сбрасываем превью на дефолтное изображение
+  imagePreview.src = 'img/upload-default-image.jpg';
 };
 
 /**
@@ -145,13 +149,24 @@ const closeUploadForm = () => {
  */
 function onDocumentKeydown(evt) {
   if (evt.key === 'Escape') {
-    const activeElement = document.activeElement;
-    const isTextFieldFocused = activeElement === hashtagsInput || activeElement === descriptionInput;
+    // Проверяем, не открыто ли сообщение об ошибке или успехе
+    const isMessageOpen = document.querySelector('.success') || document.querySelector('.error');
 
-    if (!isTextFieldFocused) {
-      evt.preventDefault();
-      closeUploadForm();
+    // Если сообщение открыто, не закрываем форму (сообщение закроется само)
+    if (isMessageOpen) {
+      return;
     }
+
+    // Проверяем, не находится ли фокус в текстовых полях
+    const isInputFocused = document.activeElement === hashtagsInput || document.activeElement === descriptionInput;
+
+    // Если фокус в текстовом поле, не закрываем форму
+    if (isInputFocused) {
+      return;
+    }
+
+    // Закрываем форму
+    closeUploadForm();
   }
 }
 
@@ -191,6 +206,12 @@ const onFileInputChange = () => {
 
   reader.addEventListener('load', () => {
     imagePreview.src = reader.result;
+
+    // Обновляем превью эффектов с загруженной фотографией
+    if (typeof updateEffectPreviews === 'function') {
+      updateEffectPreviews(reader.result);
+    }
+
     openUploadForm();
   });
 

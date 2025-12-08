@@ -6,7 +6,7 @@ import { loadData } from './api.js';
 import { renderThumbnails } from './thumbnails.js';
 import { showDataErrorMessage } from './messages.js';
 import { initForm } from './form.js';
-import './filters.js';
+import { initFilters } from './filters.js';
 
 /**
  * Инициализация приложения
@@ -20,6 +20,8 @@ const initApp = () => {
     .then((photos) => {
       // Отрисовываем миниатюры
       renderThumbnails(photos);
+      // Инициализируем фильтры после успешной загрузки
+      initFilters(photos);
     })
     .catch(() => {
       // Показываем сообщение об ошибке
@@ -29,4 +31,3 @@ const initApp = () => {
 
 // Запускаем приложение
 initApp();
-

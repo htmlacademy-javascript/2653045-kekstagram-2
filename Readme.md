@@ -1,8 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Kostiantyn Drozd](https://up.htmlacademy.ru/javascript-individual/2/user/2653045).
-<<<<<<< HEAD
-* Наставник: `Алексей Васильев`(https://htmlacademy.ru/profile/id1353249).
+* Наставник: {Анастасия Гущина}(https://htmlacademy.ru/profile/vanastasiya/certificates).
 
 
 

@@ -1,3 +1,5 @@
+const DATA_ERROR_SHOW_TIME = 5000;
+
 const bodyElement = document.querySelector('body');
 const dataErrorTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -9,7 +11,7 @@ const closeMessage = (element) => {
   bodyElement.removeEventListener('click', onBodyClick);
 };
 
-function onDocumentKeydown(evt) {
+const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     const message = document.querySelector('.success') || document.querySelector('.error');
@@ -17,9 +19,9 @@ function onDocumentKeydown(evt) {
       closeMessage(message);
     }
   }
-}
+};
 
-function onBodyClick(evt) {
+const onBodyClick = (evt) => {
   if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
     return;
   }
@@ -27,7 +29,7 @@ function onBodyClick(evt) {
   if (message) {
     closeMessage(message);
   }
-}
+};
 
 const showDataErrorMessage = () => {
   const dataError = dataErrorTemplate.cloneNode(true);
@@ -35,7 +37,7 @@ const showDataErrorMessage = () => {
 
   setTimeout(() => {
     dataError.remove();
-  }, 5000);
+  }, DATA_ERROR_SHOW_TIME);
 };
 
 const showSuccessMessage = () => {

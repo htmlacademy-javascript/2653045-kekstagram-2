@@ -91,10 +91,7 @@ const validateHashtagsUniqueness = (value) => {
  */
 const validateHashtagNotOnlyHash = (value) => {
   const hashtags = parseHashtags(value);
-  if (hashtags.length === 0) {
-    return true;
-  }
-  return !hashtags.some((tag) => tag === '#');
+  return hashtags.length === 0 || !hashtags.some((tag) => tag === '#');
 };
 
 // Добавление правил валидации для хэштегов
@@ -169,7 +166,7 @@ const closeUploadForm = () => {
  * Обработчик нажатия клавиши Escape
  * @param {KeyboardEvent} evt - Событие клавиатуры
  */
-function onDocumentKeydown(evt) {
+const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
     // Проверяем, не открыто ли сообщение об ошибке или успехе
     const isMessageOpen = document.querySelector('.success') || document.querySelector('.error');

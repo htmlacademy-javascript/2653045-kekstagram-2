@@ -53,6 +53,7 @@ let effectLevelValue = null;
 let effectLevelContainer = null;
 let effectsRadioButtons = null;
 let currentEffect = 'none';
+let isEffectsInitialized = false;
 
 const isSliderInitialized = () => effectLevelSlider && effectLevelSlider.noUiSlider !== undefined;
 
@@ -168,15 +169,15 @@ const initEffects = () => {
     createSlider();
   }
 
-  if (isSliderInitialized()) {
+  if (isSliderInitialized() && !isEffectsInitialized) {
     effectLevelSlider.noUiSlider.on('update', onSliderUpdate);
   }
 
-  if (effectsRadioButtons) {
+  if (effectsRadioButtons && !isEffectsInitialized) {
     effectsRadioButtons.forEach((radio) => {
-      radio.removeEventListener('change', onEffectChange);
       radio.addEventListener('change', onEffectChange);
     });
+    isEffectsInitialized = true;
   }
 
   toggleSliderVisibility(false);

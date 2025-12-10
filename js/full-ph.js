@@ -78,12 +78,12 @@ const closeBigPicture = () => {
  * Обработчик нажатия клавиши Esc.
  * @param {Event} evt - Объект события.
  */
-function onDocumentKeydown (evt) {
+const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeBigPicture();
   }
-}
+};
 
 /**
  * Заполняет и открывает полноразмерное окно.

@@ -147,6 +147,7 @@ const unblockSubmitButton = () => {
 const closeUploadForm = () => {
   uploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
+  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadForm.reset();
@@ -187,7 +188,7 @@ const onDocumentKeydown = (evt) => {
     // Закрываем форму
     closeUploadForm();
   }
-}
+};
 
 /**
  * Открывает форму загрузки изображения

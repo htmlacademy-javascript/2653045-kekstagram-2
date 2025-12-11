@@ -220,24 +220,14 @@ const onFileInputChange = () => {
     return;
   }
 
-  // Чтение файла и установка превью
-  const reader = new FileReader();
+  // Создание URL для превью изображения
+  const imageUrl = URL.createObjectURL(file);
+  imagePreview.src = imageUrl;
 
-  reader.addEventListener('load', () => {
-    imagePreview.src = reader.result;
+  // Обновляем превью эффектов с загруженной фотографией
+  updateEffectPreviews(imageUrl);
 
-    // Обновляем превью эффектов с загруженной фотографией
-    updateEffectPreviews(reader.result);
-
-    openUploadForm();
-  });
-
-  reader.addEventListener('error', () => {
-    // eslint-disable-next-line no-alert
-    alert('Не удалось загрузить изображение');
-  });
-
-  reader.readAsDataURL(file);
+  openUploadForm();
 };
 
 /**

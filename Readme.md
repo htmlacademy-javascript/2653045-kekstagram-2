@@ -1,9 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Kostiantyn Drozd](https://up.htmlacademy.ru/javascript-individual/2/user/2653045).
-* Наставник: {Анастасия Гущина}(https://htmlacademy.ru/profile/vanastasiya/certificates).
-
-
+* Студент: [Kostiantyn Drozd](https://up.htmlacademy.ru/javascript-individual/2/user/2653045 ).
+* Наставник: [Анастасия Гущина](https://htmlacademy.ru/profile/vanastasiya/certificates).
 
 ---
 
@@ -18,7 +16,7 @@ _`.editorconfig`, `.eslintrc`, `.gitattributes`, `.gitignore`, `package-lock.jso
 
 #### 1. Зарегистрируйтесь на Гитхабе
 
-Если у вас ещё нет аккаунта на [github.com](https://github.com/join), скорее зарегистрируйтесь.
+Если у вас ещё нет аккаунта на [github.com](https://github.com/join ), скорее зарегистрируйтесь.
 
 #### 2. Создайте форк
 
@@ -32,15 +30,12 @@ _`.editorconfig`, `.eslintrc`, `.gitattributes`, `.gitignore`, `package-lock.jso
 
 #### 3. Клонируйте репозиторий на свой компьютер
 
-Будьте внимательны: нужно клонировать свой репозиторий (форк), а не репозиторий Академии. Также обратите внимание, что клонировать репозиторий нужно через SSH, а не через HTTPS. Нажмите зелёную кнопку в правой части экрана, чтобы скопировать SSH-адрес вашего репозитория:
+Будьте внимательны: нужно клонировать свой репозиторий (форк ), а не репозиторий Академии. Также обратите внимание, что клонировать репозиторий нужно через SSH, а не через HTTPS. Нажмите зелёную кнопку в правой части экрана, чтобы скопировать SSH-адрес вашего репозитория:
 
 <img width="769" alt="" src="https://user-images.githubusercontent.com/10909/35275224-1d97a7dc-0050-11e8-89f9-41c9a7b2ae9c.png">
 
 Клонировать репозиторий можно так:
 
-```
-git clone SSH-адрес_вашего_форка
-```
 
 Команда клонирует репозиторий на ваш компьютер и подготовит всё необходимое для старта работы.
 
@@ -50,4 +45,4 @@ git clone SSH-адрес_вашего_форка
 
 <a href="https://htmlacademy.ru/intensive/javascript"><img align="left" width="50" height="50" alt="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/javascript/logo-for-github-2.png"></a>
 
-Репозиторий создан для обучения на интенсивном онлайн‑курсе «[JavaScript. Профессиональная разработка веб-интерфейсов](https://htmlacademy.ru/intensive/javascript)» от [HTML Academy](https://htmlacademy.ru).
+Репозиторий создан для обучения на интенсивном онлайн‑курсе «[JavaScript. Профессиональная разработка веб-интерфейсов](https://htmlacademy.ru/intensive/javascript )» от [HTML Academy](https://htmlacademy.ru ).

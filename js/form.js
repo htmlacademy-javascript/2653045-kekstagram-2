@@ -27,8 +27,11 @@ const imagePreview = document.querySelector('.img-upload__preview img');
 // Инициализация Pristine
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  successClass: 'img-upload__field-wrapper--success',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error',
+  errorTextTag: 'div',
+  errorTextClass: 'pristine-error',
 });
 
 /**
@@ -81,6 +84,16 @@ const validateHashtagsUniqueness = (value) => {
   return hashtags.length === uniqueHashtags.size;
 };
 
+/**
+ * Валидация на хэштег состоящий только из решётки
+ * @param {string} value - Строка с хэштегами
+ * @returns {boolean}
+ */
+const validateHashtagNotOnlyHash = (value) => {
+  const hashtags = parseHashtags(value);
+  return hashtags.length === 0 || !hashtags.some((tag) => tag === '#');
+};
+
 // Добавление правил валидации для хэштегов
 pristine.addValidator(
   hashtagsInput,
@@ -98,6 +111,12 @@ pristine.addValidator(
   hashtagsInput,
   validateHashtagsUniqueness,
   'Хэштеги не должны повторяться (регистр не учитывается)'
+);
+
+pristine.addValidator(
+  hashtagsInput,
+  validateHashtagNotOnlyHash,
+  'Хэштег не может состоять только из решётки'
 );
 
 // Добавление правил валидации для комментария
@@ -122,13 +141,13 @@ const unblockSubmitButton = () => {
   uploadSubmit.disabled = false;
   uploadSubmit.textContent = 'Опубликовать';
 };
-
 /**
  * Закрывает форму загрузки изображения
  */
 const closeUploadForm = () => {
   uploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
+  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadForm.reset();
@@ -141,13 +160,14 @@ const closeUploadForm = () => {
 
   // Сбрасываем превью на дефолтное изображение
   imagePreview.src = 'img/upload-default-image.jpg';
+  updateEffectPreviews('img/upload-default-image.jpg');
 };
 
 /**
  * Обработчик нажатия клавиши Escape
  * @param {KeyboardEvent} evt - Событие клавиатуры
  */
-function onDocumentKeydown(evt) {
+const onDocumentKeydown = (evt) => {
   if (evt.key === 'Escape') {
     // Проверяем, не открыто ли сообщение об ошибке или успехе
     const isMessageOpen = document.querySelector('.success') || document.querySelector('.error');
@@ -168,7 +188,7 @@ function onDocumentKeydown(evt) {
     // Закрываем форму
     closeUploadForm();
   }
-}
+};
 
 /**
  * Открывает форму загрузки изображения
@@ -201,26 +221,14 @@ const onFileInputChange = () => {
     return;
   }
 
-  // Чтение файла и установка превью
-  const reader = new FileReader();
+  // Создание URL для превью изображения
+  const imageUrl = URL.createObjectURL(file);
+  imagePreview.src = imageUrl;
 
-  reader.addEventListener('load', () => {
-    imagePreview.src = reader.result;
+  // Обновляем превью эффектов с загруженной фотографией
+  updateEffectPreviews(imageUrl);
 
-    // Обновляем превью эффектов с загруженной фотографией
-    if (typeof updateEffectPreviews === 'function') {
-      updateEffectPreviews(reader.result);
-    }
-
-    openUploadForm();
-  });
-
-  reader.addEventListener('error', () => {
-    // eslint-disable-next-line no-alert
-    alert('Не удалось загрузить изображение');
-  });
-
-  reader.readAsDataURL(file);
+  openUploadForm();
 };
 
 /**

@@ -53,6 +53,7 @@ let effectLevelValue = null;
 let effectLevelContainer = null;
 let effectsRadioButtons = null;
 let currentEffect = 'none';
+let isEffectsInitialized = false;
 
 const isSliderInitialized = () => effectLevelSlider && effectLevelSlider.noUiSlider !== undefined;
 
@@ -157,18 +158,6 @@ const resetEffects = () => {
   }
 };
 
-/**
- * Обновляет превью эффектов с загруженной фотографией
- * @param {string} imageUrl - URL загруженной фотографии (base64 или обычный URL)
- */
-const updateEffectPreviews = (imageUrl) => {
-  const effectPreviews = document.querySelectorAll('.effects__preview');
-
-  effectPreviews.forEach((preview) => {
-    preview.style.backgroundImage = `url(${imageUrl})`;
-  });
-};
-
 const initEffects = () => {
   imagePreview = document.querySelector('.img-upload__preview img');
   effectLevelSlider = document.querySelector('.effect-level__slider');
@@ -180,18 +169,30 @@ const initEffects = () => {
     createSlider();
   }
 
-  if (isSliderInitialized()) {
+  if (isSliderInitialized() && !isEffectsInitialized) {
     effectLevelSlider.noUiSlider.on('update', onSliderUpdate);
   }
 
-  if (effectsRadioButtons) {
+  if (effectsRadioButtons && !isEffectsInitialized) {
     effectsRadioButtons.forEach((radio) => {
-      radio.removeEventListener('change', onEffectChange);
       radio.addEventListener('change', onEffectChange);
     });
+    isEffectsInitialized = true;
   }
 
   toggleSliderVisibility(false);
+};
+
+/**
+ * Обновляет превью эффектов с загруженной фотографией
+ * @param {string} imageUrl - URL загруженной фотографии (base64 или обычный URL)
+ */
+const updateEffectPreviews = (imageUrl) => {
+  const effectPreviews = document.querySelectorAll('.effects__preview');
+
+  effectPreviews.forEach((preview) => {
+    preview.style.backgroundImage = `url(${imageUrl})`;
+  });
 };
 
 export { initEffects, resetEffects, updateEffectPreviews };

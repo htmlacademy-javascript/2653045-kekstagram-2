@@ -23,10 +23,18 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
+/**
+ * Проверяет, нажата ли клавиша Escape
+ * @param {KeyboardEvent} evt - Событие клавиатуры
+ * @returns {boolean} - true, если нажата клавиша Escape
+ */
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 export {
   getRandomInteger,
   getRandomArrayElement,
   getUniqueCommentId,
   resetCommentIdCounter,
-  debounce
+  debounce,
+  isEscapeKey
 };

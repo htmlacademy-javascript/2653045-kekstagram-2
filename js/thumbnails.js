@@ -1,7 +1,7 @@
-
 /**
  * Модуль для отрисовки миниатюр фотографий
- */import { openBigPicture } from './full-ph.js';
+ */
+import { showBigPicture } from './full-ph.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -24,8 +24,7 @@ const createThumbnail = (photo) => {
   // Добавляем обработчик клика для открытия полноразмерного фото
   thumbnail.addEventListener('click', (evt) => {
     evt.preventDefault();
-    openBigPicture(photo);
-
+    showBigPicture(photo);
   });
 
   return thumbnail;

@@ -141,13 +141,13 @@ const unblockSubmitButton = () => {
   uploadSubmit.disabled = false;
   uploadSubmit.textContent = 'Опубликовать';
 };
+
 /**
  * Закрывает форму загрузки изображения
  */
 const closeUploadForm = () => {
   uploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
-  // eslint-disable-next-line no-use-before-define
   document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadForm.reset();
@@ -167,7 +167,7 @@ const closeUploadForm = () => {
  * Обработчик нажатия клавиши Escape
  * @param {KeyboardEvent} evt - Событие клавиатуры
  */
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown(evt) {
   if (evt.key === 'Escape') {
     // Проверяем, не открыто ли сообщение об ошибке или успехе
     const isMessageOpen = document.querySelector('.success') || document.querySelector('.error');
@@ -188,7 +188,7 @@ const onDocumentKeydown = (evt) => {
     // Закрываем форму
     closeUploadForm();
   }
-};
+}
 
 /**
  * Открывает форму загрузки изображения
@@ -215,8 +215,7 @@ const onFileInputChange = () => {
 
   // Проверка типа файла
   if (!file.type.startsWith('image/')) {
-    // eslint-disable-next-line no-alert
-    alert('Пожалуйста, выберите изображение');
+    showErrorMessage();
     uploadFileInput.value = '';
     return;
   }

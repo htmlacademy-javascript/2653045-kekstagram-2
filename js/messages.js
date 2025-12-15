@@ -5,33 +5,33 @@ const dataErrorTemplate = document.querySelector('#data-error').content.querySel
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
-const onDocumentKeydown = (evt) => {
+// Объявляем функцию closeMessage перед использованием
+function closeMessage(element) {
+  element.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  bodyElement.removeEventListener('click', onBodyClick);
+}
+
+// Объявляем обработчики как function declarations
+function onDocumentKeydown(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     const message = document.querySelector('.success') || document.querySelector('.error');
     if (message) {
-      // eslint-disable-next-line no-use-before-define
       closeMessage(message);
     }
   }
-};
+}
 
-const onBodyClick = (evt) => {
+function onBodyClick(evt) {
   if (evt.target.closest('.success__inner') || evt.target.closest('.error__inner')) {
     return;
   }
   const message = document.querySelector('.success') || document.querySelector('.error');
   if (message) {
-    // eslint-disable-next-line no-use-before-define
     closeMessage(message);
   }
-};
-
-const closeMessage = (element) => {
-  element.remove();
-  document.removeEventListener('keydown', onDocumentKeydown);
-  bodyElement.removeEventListener('click', onBodyClick);
-};
+}
 
 const showDataErrorMessage = () => {
   const dataError = dataErrorTemplate.cloneNode(true);

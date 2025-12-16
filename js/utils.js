@@ -1,12 +1,3 @@
-const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-let commentIdCounter = 1;
-const getUniqueCommentId = () => commentIdCounter++;
-const resetCommentIdCounter = () => {
-  commentIdCounter = 1;
-};
-
 /**
  * Функция устранения дребезга (debounce)
  * Откладывает выполнение функции до тех пор, пока не пройдет указанное время после последнего вызова
@@ -31,10 +22,6 @@ const debounce = (callback, timeoutDelay) => {
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {
-  getRandomInteger,
-  getRandomArrayElement,
-  getUniqueCommentId,
-  resetCommentIdCounter,
   debounce,
   isEscapeKey
 };

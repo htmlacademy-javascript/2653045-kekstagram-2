@@ -94,6 +94,7 @@ const showBigPicture = (pictureData) => {
   commentCountElement.classList.remove('hidden');
 
   document.addEventListener('keydown', onDocumentKeydown);
+  cancelButtonElement.addEventListener('click', onCancelButtonClick);
   commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
 
   renderPictureDetails(pictureData);
@@ -104,7 +105,5 @@ const showBigPicture = (pictureData) => {
 
   renderComments();
 };
-
-cancelButtonElement.addEventListener('click', onCancelButtonClick);
 
 export { showBigPicture };
